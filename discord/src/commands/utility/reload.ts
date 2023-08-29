@@ -5,7 +5,7 @@ export const restart: Command = {
   data: new SlashCommandBuilder().
     setName('restart').
     setDescription('restart the bot'),
-  run: async (interaction) => {
+  run: async (interaction,bot) => {
     
   }
 }

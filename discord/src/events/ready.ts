@@ -3,9 +3,10 @@ import { Routes } from "discord-api-types/v9";
 // import { Client } from "discord.js";
 import {BloDClient as Client} from "../interfaces/client";
 import { token } from "../../config";
+import { Socket } from "socket.io-client";
 // import { CommandList } from "../../temp";
 
-export const onReady = async (BOT: Client) => {
+export const onReady = async (BOT: Client,socket:Socket) => {
   const rest = new REST().setToken(
     token as string
   );
@@ -16,5 +17,6 @@ export const onReady = async (BOT: Client) => {
     { body: commandData }
   );
 
-  console.log("Discord ready!");
+  console.log("Discord ready!",BOT.application.id);
+  socket.emit('ready',{id:BOT.application.id})
 };

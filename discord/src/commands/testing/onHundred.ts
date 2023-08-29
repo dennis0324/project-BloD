@@ -12,7 +12,7 @@ export const oneHundred: Command = {
         .setDescription("The message to go in your 100 Days of Code update.")
         .setRequired(true)
     ),
-  run: async (interaction) => {
+  run: async (interaction,bot) => {
     await interaction.deferReply();
     const { user } = interaction;
 
