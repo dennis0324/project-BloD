@@ -1,6 +1,8 @@
 import { Command } from "@/interfaces/command";
 import { EmbedBuilder, ForumChannel, SlashCommandBuilder } from "discord.js";
 import { fork } from 'child_process'
+import { getChannel, getTitles } from "@/utility/discord";
+
 
 const appName = 'BloD'
 export const restart: Command = {
@@ -15,24 +17,16 @@ export const restart: Command = {
     // interaction.guild
     // load를 했을 경우 한 라이브러리의 메세지를 확인하기 위함이다.
     // interaction를 실행한 guild의 채널을 확인후 특정 채널을 찾는다.
-    await Promise.all(interaction.guild.channels.cache.map(async channel => {
-      // 포럼 채널을 가지고 오는 것이 아니라 사용자가 지정해준 채널 ID를 가지고 오게 시킨다.
-      // TODO: set channel id를 통해서 사용자가 채널 ID를 지정할 수 있게 한다. 
-      if(channel.id === '1088461106701422735'){
-        const threads = await (channel as ForumChannel).threads.fetch({archived:{limit:100}})
-        console.log(threads)
-        // 포럼 채널에서 모든 글을 가지고 온다.
-        for await (const thread of threads.threads.values()){
-          console.log('\n'+thread.name)
-          // const messages = await thread.messages.fetch()
-          // messages.forEach(message => {
-          //   console.log(message.content)
-          // })
-        }
-      }
-
-      
-    })) 
+    const channel = interaction.guild.channels.cache.find(channel => channel.id === '1088461106701422735')
+    const threads = await getTitles(channel as ForumChannel)
+    for await(const thread of threads.threads.values()){
+      console.log('\n'+thread.name)
+      console.log(thread)
+      // const messages = await thread.messages.fetch()
+      // messages.forEach(message => {
+      //   console.log(message.content)
+      // })
+    }
 
     const { user } = interaction;
 
