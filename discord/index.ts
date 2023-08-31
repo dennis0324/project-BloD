@@ -1,10 +1,11 @@
 // Require the necessary discord.js classes
-import { Events, GatewayIntentBits, Interaction, Partials } from 'discord.js';
+import { Events, ForumChannel, GatewayIntentBits, Interaction, Partials } from 'discord.js';
 import { token } from './config';
 import { onReady } from "./src/events/ready";
 import { oneHundred } from "./src/commands/testing/onHundred";
 import clientManager, { BloDClient } from 'src/utility/blod-client';
 import { Manager } from 'socket.io-client';
+import { getChannel, getServer, getTitles } from '@/utility/discord';
 
 
 async function run(){
@@ -12,7 +13,7 @@ async function run(){
     reconnectionDelayMax: 10000,
   });
 
-  const socket = manager.socket("/");
+  const socket = manager.socket("/polls");
 
 
   
@@ -35,17 +36,29 @@ async function run(){
       ],
     }
   );
-
+  //TODO: 파일 새로 하나 만들어서 넣기
+    //push: discord -> nestjs
+    //pull: nestjs -> discord
   socket.on("connect", () => {
-    console.log("connected");
-
-    socket.on('getBlogPost',async (data) => {
-      console.log(data.serverID)
-      socket.emit('getBlogPost',client.guilds.cache.get(data.serverID).id)
-    })
-
-
+    console.log("connected",socket.id);
   })
+
+  socket.on('blog:getPost',async (data) => {
+    console.log(data.serverID)
+    socket.emit('blog:getPost',client.guilds.cache.get(data.serverID).id)
+  })
+
+  socket.on('blog:nd:title',async (data) => {
+    console.log('discord getting title',data.serverID)
+    const guild = getServer(client,data.serverID)
+
+    //TODO: 이거 literal 형식이 아니라 variable 형식으로 변경해야됨
+    const channel = getChannel(guild,'1088461106701422735')
+    const threads = await getTitles(channel as ForumChannel)
+    const threadsName = threads.threads.map(thread => thread.name)
+    socket.emit('blog:dn:title',threadsName)
+  })
+  /////////
   
   client.on("ready", async () => await onReady(client, socket));
 
