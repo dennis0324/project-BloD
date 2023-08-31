@@ -1,0 +1,71 @@
+.morseCode{
+    background-color: rgba(var(--foreground-rgb));
+    background-clip: content-box;
+}
+
+/* 로고(아이패드 및 컴퓨터) */  
+@media (min-width : 1000px) {
+    .logo{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display:flex;
+
+    }
+}
+/* 로고(핸드폰) */
+@media (max-width: 999px) {
+    .logo{
+        display:block;
+    }
+}
+
+@media (max-width: 600px){
+    .logo-pic:not(.home) {
+        display:none !important;
+    }
+}
+
+/* 로고 글씨 css입니다. */
+.logo{
+    font-size: 40px;
+    font-weight: bold;
+    color:var(--basic-color);
+
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    overflow: hidden;
+    align-items: center;
+
+}
+
+.morsecode-line{
+    padding:3px;
+    display:flex;
+}
+
+/* 모스 코드 바코드를 일렬로 만들어줍니다. */
+.morseCode {
+    display: inline-flex;
+}
+
+/* 색깔이 바뀌지 않는 부분입니다. */
+.logo-color-static{
+    background-color: #fb0;
+}
+
+/* 로고 바코드의 긴 박스를 표시하는 구간입니다. */
+.long{
+    margin-right:5px;
+    width: 18px;
+    height: 7px;
+    border-radius: 2px;
+}
+
+/* 로고 바코드의 짧은 박스를 표시하는 구간입니다. */
+.short{
+    margin-right:5px;
+    width:7px;
+    height:7px;
+    border-radius: 2px;
+}
