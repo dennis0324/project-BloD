@@ -6,14 +6,15 @@ import { oneHundred } from "./src/commands/testing/onHundred";
 import clientManager, { BloDClient } from 'src/utility/blod-client';
 import { Manager } from 'socket.io-client';
 import { getChannel, getServer, getTitles } from '@/utility/discord';
+import { BLoDDiscordSocket } from '@/socket-io';
 
 
 async function run(){
-  const manager = new Manager("http://localhost:3000", {
-    reconnectionDelayMax: 10000,
-  });
+  // const manager = new Manager("http://localhost:3000", {
+  //   reconnectionDelayMax: 10000,
+  // });
 
-  const socket = manager.socket("/polls");
+  // const socket = manager.socket("/polls");
 
   const client = new BloDClient(
     {
@@ -33,35 +34,25 @@ async function run(){
         Partials.Reaction,
       ],
     }
-  );
+    );
+  const discordSocket = new BLoDDiscordSocket(client)
   //TODO: 파일 새로 하나 만들어서 넣기 동적으로 이벤트 넣어서 자동으로 등록하기
   //TODO: 자동으로 디스코드 서버와 연결 시키기
   //TODO: 자동으로 디스코드 포럼 채널과 연결 시키기 if channle >= 2 then warn
   // 함수 이름: regitster Scocket Event
     //push: discord -> nestjs
     //pull: nestjs -> discord
-  socket.on("connect", () => {
-    console.log("connected",socket.id);
-  })
+    
+    // type: string
+    // handler: function
+  // socket.on("connect", () => {
+  //   console.log("connected",socket.id);
+  // })
 
-  socket.on('blog:getPost',async (data) => {
-    console.log(data.serverID)
-    socket.emit('blog:getPost',client.guilds.cache.get(data.serverID).id)
-  })
 
-  socket.on('blog:nd:title',async (data) => {
-    console.log('discord getting title',data.serverID)
-    const guild = getServer(client,data.serverID)
-
-    //TODO: 이거 literal 형식이 아니라 variable 형식으로 변경해야됨
-    const channel = getChannel(guild,'1088461106701422735')
-    const threads = await getTitles(channel as ForumChannel)
-    const threadsName = threads.threads.map(thread => thread.name)
-    socket.emit('blog:dn:title',threadsName)
-  })
   /////////
   
-  client.on("ready", async () => await onReady(client, socket));
+  client.on("ready", async () => await onReady(client, discordSocket.getSocket()));
 
   // We use 'c' for the event parameter to keep it separate from the already defined 'client'
   client.on(Events.InteractionCreate, async (interaction: Interaction ) => {
