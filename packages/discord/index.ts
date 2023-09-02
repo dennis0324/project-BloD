@@ -15,8 +15,6 @@ async function run(){
 
   const socket = manager.socket("/polls");
 
-
-  
   const client = new BloDClient(
     {
       intents: [
@@ -36,7 +34,10 @@ async function run(){
       ],
     }
   );
-  //TODO: 파일 새로 하나 만들어서 넣기
+  //TODO: 파일 새로 하나 만들어서 넣기 동적으로 이벤트 넣어서 자동으로 등록하기
+  //TODO: 자동으로 디스코드 서버와 연결 시키기
+  //TODO: 자동으로 디스코드 포럼 채널과 연결 시키기 if channle >= 2 then warn
+  // 함수 이름: regitster Scocket Event
     //push: discord -> nestjs
     //pull: nestjs -> discord
   socket.on("connect", () => {
@@ -86,11 +87,9 @@ async function run(){
   })
 
   // Log in to Discord with your client's token
-  console.log(token)
-
   // testing for thread update
   client.on(Events.MessageUpdate,async (oldMessage, newMessage) => {
-    console.log('test')
+    console.log('thread update')
   })
   client.login(token);
 }
