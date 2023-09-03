@@ -1,7 +1,8 @@
 import { BloDClient } from '@/utility/blod-client';
 import { Socket as SocketIO } from 'socket.io-client';
+import { BLoDDiscordSocket } from '.';
 
-type SocketHandler = (client:BloDClient,socket:SocketIO,data: any) => Promise<void>;
+type SocketHandler = (socketManager:BLoDDiscordSocket,data: any) => Promise<void>;
 type SocketEvent = string;
 type SocketData = any;
 

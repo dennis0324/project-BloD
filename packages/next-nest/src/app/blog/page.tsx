@@ -21,7 +21,7 @@ async function getData() {
       console.log(data)
     })
   })
-  BloDSocketIO.getPolls().emit('blog:nxns:title',{serverID:'980836436456644619'})
+  BloDSocketIO.getPolls().emit('blog:nxns:title',{routePath:'blog'})
 
   // BloDSocketIO.getPolls().close()
   

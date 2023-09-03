@@ -5,14 +5,15 @@ import {BloDClient as Client} from "../interfaces/client";
 import { token } from "../../config";
 import { Socket } from "socket.io-client";
 import { applicationID } from 'config'
+import { BLoDDiscordSocket } from "@/socket-io";
 // import { CommandList } from "../../temp";
 
-export const onReady = async (BOT: Client,socket:Socket) => {
+export const onReady = async (socketManager:BLoDDiscordSocket) => {
   const rest = new REST().setToken(
     token as string
   );
-  const commandData = BOT.commands.map((command) => command.data.toJSON());
-  const guildID = BOT.guilds.cache.first().id;
+  const commandData = socketManager.getClient().commands.map((command) => command.data.toJSON());
+  const guildID = socketManager.getClient().guilds.cache.first().id;
 
   await rest.put(
     // clientid, guildid
@@ -20,8 +21,9 @@ export const onReady = async (BOT: Client,socket:Socket) => {
     { body: commandData }
   );
 
-  console.log("Discord ready!",BOT.application.id);
-
+  console.log("Discord ready!",socketManager.getClient().application.id);
+  socketManager.discordReady()
+  
   //TODO: 해당 디스코드 봇이 2개 이상의 서버에 들어가있다면 WARN 띄우기
-  socket.emit('ready',{id:BOT.application.id})
+  // socketManager.getSocket().emit('discord:ready',{id:socketManager.getClient().application.id})
 };
