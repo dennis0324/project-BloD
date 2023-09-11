@@ -67,59 +67,29 @@ nest.stdout.on('data', (data:string) => {
   const reg = new RegExp('(' + ansiEscape.source + ')|(' + nextReg.source + ')')
 
   var ese = data.replace(ansiEscape,'')
-  console.log(ese.match(/\b(\w+)\b/g))
-  // const pattern1 = /([\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><])
   if(data.search(/(\[.*?\]\s)/) !== -1){
-    // process.stdout.write(data)
     // nestjs
     console.log(ese)
 
     if(data.includes('[Nest]')){
-      // ese = data.split(ansiEscape)
-      // ese = data.split(nextReg).filter((e:string) => (e ? e.match(/\S/): false))
-      // ese =  ese.filter(e => !e.match(ansiEscape))
-      // ese = data.split(nextReg).filter((e:string) => (e ? e.match(/\S/): false))
-      // ese = ese.filter((e:string) => {
-      //   console.log(e)
-      //   return e.match(/\S/)
-      // })
+
       console.log(ese)
-      // var ese = removeEnter.split(/(\[.*?\]\s|\s{2,})/).filter((e:string) => e.match(/\S/))
-      // console.log(ese[0])
       if((ese[0] as string).includes('[Nest]')){
-        // ese = ese.map((e:string) => e.trim())
         console.log(ese)
-        // process.stdout.write(chalk.yellowBright('[NestNext]') + ' - ' + chalk.yellow(ese[NextLog.TIME]) + ' - ' + chalk.greenBright(ese[NextLog.TYPE]) + ' - ' + chalk.blueBright(ese[NextLog.NAME])+chalk.whiteBright('('+ese[NextLog.OBJECT]+')'))
-        // log(chalk.yellowBright('[NestNext]') + ' - ' + chalk.yellow(ese[NextLog.TIME]) + ' - ' + chalk.greenBright(ese[NextLog.TYPE]) + ' - ' + chalk.blueBright(ese[NextLog.NAME])+chalk.whiteBright('('+ese[NextLog.OBJECT]+')'))
-        // logger.info('Nest')
-        // for(let i = 6; i <ese.length; i++){
-        //   console.log(ese[i])
-        // }
+
       }
       else if((ese[0] as string).includes('['))
         console.log('next')
-      // console.log(ese)
+
     }
     // webpack
     else{
-      // var ese = data.split(ansiEscape)
-      // console.log(ese)
+
     }
   }
   else{
     // console.log(data)
   }
-
-
-  // if(replacedText.startsWith('-:-')){
-  //   console.log(replacedText.split('-:-'))
-  //   console.log('nestjs')
-  // }
-  // else if(replacedText.startsWith('-')){
-  //   const str:string = replacedText.replace('-','')
-  //   console.log(str)
-  // }
-  // console.log(`stdout: ${replacedText}`);
 })
 
 discord.stdout.on('data', (data:string) => {
