@@ -1,0 +1,26 @@
+{
+  "name": "cli",
+  "version": "0.0.1",
+  "description": "",
+  "exports": "./index.js",
+  "scripts": {
+    "start": "ts-node testing.ts",
+    "dev": "npm-run-all -p dev:*",
+    "dev:discord": "cd ../discord && npm run start:dev",
+    "dev:nest": "cd ../next-nest && npm run start:dev"
+  },
+  "author": "dennis ko",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "lodash": "^4.17.21",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2",
+    "winston": "^3.10.0",
+    "winston-daily-rotate-file": "^4.7.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.198"
+  }
+}
