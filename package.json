@@ -3,7 +3,7 @@
     "dev": "npm-run-all -p dev:*",
     "dev:discord": "cd packages/discord && npm run start:dev",
     "dev:nest": "cd packages/next-nest && npm run start:dev",
-    "dev:start": "cd packages/cli && npm run start"
+    "start": "cd packages/cli && npm run start"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^2.1.0",
