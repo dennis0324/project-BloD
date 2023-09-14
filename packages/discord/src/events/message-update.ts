@@ -1,7 +1,7 @@
 import { BLoDDiscordSocket } from "@/socket-io";
 import { BloDClient } from "@/utility/blod-client";
 import { Message, PartialMessage } from "discord.js";
-import { generateLatex } from '../../testing/latex';
+import { generateLatex } from 'src/utility/latex';
 
 // import { CommandList } from "../../temp";
 
