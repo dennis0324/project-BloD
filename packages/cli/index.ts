@@ -3,6 +3,8 @@ import { spawn } from 'child_process'
 import winston from 'winston'
 import winstonDaily from 'winston-daily-rotate-file'
 import chalk from 'chalk'
+import { Extract } from './src/util/stringExtracter'
+// import { extract as extractFunc } from './src/util/stringExtracter/index2'
 
 // const { combine, timestamp, label, printf } = winston.format;
 
@@ -67,28 +69,47 @@ nest.stdout.on('data', (data:string) => {
   const reg = new RegExp('(' + ansiEscape.source + ')|(' + nextReg.source + ')')
 
   var ese = data.replace(ansiEscape,'')
-  if(data.search(/(\[.*?\]\s)/) !== -1){
-    // nestjs
-    console.log(ese)
+  console.log('-----')
+  // console.log(ese)
 
-    if(data.includes('[Nest]')){
+  console.log(ese)
+  const t = new Extract('{name} {code}  - {date}     {log} {Object} {message}')
+  const r = new Extract('{time} {messages}')
+  const x = new Extract('- {event} {messages}')
 
-      console.log(ese)
-      if((ese[0] as string).includes('[Nest]')){
-        console.log(ese)
-
-      }
-      else if((ese[0] as string).includes('['))
-        console.log('next')
-
+  if(ese.includes('[')){
+    if(ese.includes('[Nest]')){
+      const test = t.extract(ese,{
+        newLineSperator:{
+          start:'\n',
+          end:'\\[Nest\\]',
+          align:'center'
+        }
+      })
+      console.log(test)
     }
-    // webpack
     else{
-
+      ese = ese.trim()
+      const test2 = r.extract(ese,{
+        newLineSperator:{
+          start:'\n',
+          align:'end'
+        }
+      })
+      console.log(test2)
     }
   }
+  else if(ese.startsWith('-')){
+    const test3 = x.extract(ese,{
+      newLineSperator:{
+        start:'\n',
+        align:'end'
+      }
+    })
+    console.log(test3)
+  }
   else{
-    // console.log(data)
+    console.log(ese)
   }
 })
 
@@ -96,3 +117,4 @@ discord.stdout.on('data', (data:string) => {
 
 })
 //
+
