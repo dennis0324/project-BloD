@@ -4,7 +4,7 @@
   "description": "",
   "exports": "./index.js",
   "scripts": {
-    "start": "ts-node testing.ts",
+    "start": "ts-node index.ts",
     "dev": "npm-run-all -p dev:*",
     "dev:discord": "cd ../discord && npm run start:dev",
     "dev:nest": "cd ../next-nest && npm run start:dev"
