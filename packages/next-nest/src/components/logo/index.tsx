@@ -1,5 +1,8 @@
+'use client'
 import React from "react"
+import { usePathname } from "next/navigation"
 import "./index.css"
+import LogoPic from "./logo"
 
 export type Mode = 'main' | 'footer'
 
@@ -7,35 +10,11 @@ type props = {
     mode:Mode
 }
 
-function logo(props:props){
-    const morseCode:number[][] = [[0,0,1,0,1,1,1,1,0,0,1,0,0,0,1,0,1,0,1,0],[1,0,0,0,0,0,0,1,0,1,0,0,1,1,1,1,1,0]];
-    return (
-        <React.Fragment>
-            <div id="LogoDiv" className="logo">
-                <div className="morsecode-lines">
-                    {
-                        morseCode.map((line,index) => {
-                            return(
-                                <div key={index} className="morsecode-line">
-                                    {
-                                        line.map((bit,bitIndex) => {
-                                            return (
-                                                <div key={bitIndex} className={`morseCode ${bit ? 'long' : 'short'}`}></div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            )
-
-                        })
-                    }
-                </div>
-                <div>
-                    FOXSTAR DEVLOG
-                </div>
-            </div>
-        </React.Fragment>
-    )
+function logo({className,mode}:{className?:string,mode:Mode}){
+    
+    const location = usePathname()
+    console.log(location)
+    return (location !== '/'|| mode === 'main') ? <LogoPic className={className}/> : ''        
 }
 
 export default logo
