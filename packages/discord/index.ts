@@ -1,6 +1,6 @@
 // Require the necessary discord.js classes
 import { Events, GatewayIntentBits, Interaction, Partials, } from 'discord.js';
-import { token } from './config';
+import { token } from './envConfig';
 import { onReady } from "@/events/ready";
 import { onInteractionCreate } from '@/events/interaction-create';
 import { BloDClient } from 'src/utility/blod-client';
