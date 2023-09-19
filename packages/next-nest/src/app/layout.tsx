@@ -1,9 +1,9 @@
-import Link from 'next/link'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import React from 'react'
 import { Navigation } from '@src/components/Navigation'
-import SocketProvider from '@src/context/socket-context'
+import Logo from '@src/components/logo'
+import PageProvider from '@src/contexts/blogpost-page'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,16 +18,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Navigation/>
-        <main>
-          {children}
-        </main>
-        <footer>
-          
-        </footer>
+    <PageProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <Navigation/>
+          <main>
+            {children}
+          </main>
+          <footer className=''>
+            <Logo mode={'footer'} className={'float-left mx-4'}/>
+            <div className='w-4 float-right mx-4'></div>
+          </footer>
         </body>
-    </html>
+      </html>
+    </PageProvider>
   )
 }
