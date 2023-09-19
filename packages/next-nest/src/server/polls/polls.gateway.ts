@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Namespace, Socket } from 'socket.io';
 // import 
 
@@ -8,6 +8,7 @@ import { Namespace, Socket } from 'socket.io';
 })
 export class PollsGateway implements 
 OnGatewayInit,OnGatewayConnection,OnGatewayDisconnect {
+  // web socket with discord and nextjs
   @WebSocketServer() io : Namespace
   private readonly logger = new Logger(PollsGateway.name);
   private routeMap = new Map<string, string>();
@@ -16,26 +17,38 @@ OnGatewayInit,OnGatewayConnection,OnGatewayDisconnect {
   afterInit(server: any) {
       this.logger.log('Websocket Initialized!');
   }
-  //pull: discord -> nestjs
-  //push: nestjs -> discord
+
+
+  //Todo: make proper emit function in nestjs format
   handleConnection(client: Socket, ...args: any[]) {
     const socket = this.io.sockets
 
-    //nextjs -> discord
-    client.on('blog:nxns:title',(data:{routePath:string}) => {
-      console.log('getting',data)
+    // title data info
+    client.on('blog:nxns:title',(data:BlogPostsSendingEmit) => {
       const guildID = this.routeMap.get(data.routePath)
-      console.log('got',guildID)
-      this.io.emit('blog:nd:title',{serverID:this.GuildID,guildID:guildID})
+      const query = {
+        serverID:this.GuildID,
+        guildID:guildID,
+        postCount:data.postCount,
+        page:data.page
+      }
+      this.io.emit('blog:nd:title',query)
     })
 
-    //discord -> nextjs
     client.on('blog:dn:title',(data) => {
-      console.log('pushing',data)
       this.io.emit('blog:nsnx:title',data)
     })
 
-    //TODO: make EnsureSendFunction 
+    // thumbnail
+    const responseSocket = client.on('blog:nxns:thumbnail',(data:ThumbnailSendingEmit) => {
+      const guildID = this.routeMap.get(data.routePath)
+      this.io.emit('blog:nd:thumbnail',{serverID:this.GuildID,guildID:guildID,messageID:data.messageID})
+    })
+
+    responseSocket.on('blog:dn:thumbnail',(data) => {
+      this.io.emit('blog:nsnx:thumbnail',data)
+    })
+
     client.on('discord:ready',(data:{
       id:string,
       routes:{
@@ -47,7 +60,6 @@ OnGatewayInit,OnGatewayConnection,OnGatewayDisconnect {
       Object.entries(data['routes']).forEach(([key,value]) => {
         this.routeMap.set(key,value)
       })
-
       console.log(this.routeMap,this.GuildID)
     })
 

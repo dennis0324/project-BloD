@@ -1,28 +1,39 @@
-import { Injectable, OnModuleInit } from '@nestjs/common'
-import { resolve } from 'path';
+import { Injectable } from '@nestjs/common'
 import { Socket, io } from 'socket.io-client';
 
 @Injectable()
 export class ApiService {
   constructor(){
     this.socket = io('http://localhost:3000/polls')
-    console.log(this.socket.id)
   }
   private socket:Socket
 
   getHello(): string{
     return 'Hello World!'
   }
-
-  getTitle(){
-
+  
+  // Todo: change emit to nestjs format emit
+  getTitle(query:{postCount:number,page:number}){
     return new Promise((resolve) => {
-      this.socket.timeout(5000).emit('blog:nxns:title',{routePath:'blog'},(err:any) =>{
+      const querys = {routePath:'blog',postCount:query.postCount,page:query.page}
+      this.socket.timeout(5000).emit('blog:nxns:title',querys,(err:any) =>{
         if(err) return resolve({data:err,err:1})
       })
       this.socket.on('blog:nsnx:title',(data) => {
-        console.log('getting with api',data)
-        return resolve({err:0,data:data})
+        return resolve({err:0,...data})
+      })
+    })
+  }
+
+  // Todo: change emit to nestjs format emit
+  getThumbnail(messageID:string){
+    return new Promise((resolve) => {
+      this.socket.timeout(5000).emit('blog:nxns:thumbnail',{routePath:'blog',messageID},(err:any) =>{
+        if(err) return resolve({data:err,err:1})
+      })
+      this.socket.on('blog:nsnx:thumbnail',(data) => {
+        if(data.id === messageID) 
+          return resolve({err:0,data:data,length:data.length})
       })
     })
   }
