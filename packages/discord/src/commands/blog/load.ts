@@ -1,7 +1,6 @@
 import { Command } from "@/interfaces/command";
 import { EmbedBuilder, ForumChannel, SlashCommandBuilder } from "discord.js";
-import { fork } from 'child_process'
-import { getChannel, getTitles } from "@/utility/discord";
+import { getTitles } from "@/utility/discord";
 
 
 const appName = 'BloD'
@@ -18,18 +17,10 @@ export const restart: Command = {
     // load를 했을 경우 한 라이브러리의 메세지를 확인하기 위함이다.
     // interaction를 실행한 guild의 채널을 확인후 특정 채널을 찾는다.
     const channel = interaction.guild.channels.cache.find(channel => channel.id === '1088461106701422735')
-    const threads = await getTitles(channel as ForumChannel)
-    for await(const thread of threads.threads.values()){
-      console.log('\n'+thread.name)
-      console.log(thread)
-      // const messages = await thread.messages.fetch()
-      // messages.forEach(message => {
-      //   console.log(message.content)
-      // })
-    }
+    const threads = await getTitles(channel as ForumChannel,5,0)
+    // TODO : need to upload to nextjs server 
 
     const { user } = interaction;
-
 
     const load = new EmbedBuilder();
     load.setTitle(`[${appName}] Load Manager`);
