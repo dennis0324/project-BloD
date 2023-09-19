@@ -1,12 +1,11 @@
-import React from 'react'
-export default async function Page(){
-  return (
-    <div>
-    </div>
-  )
-}
+'use client'
+import { usePage } from '@src/contexts/blogpost-page'
+import { useRouter } from 'next/navigation'
 
-//Get: nest -> next
-//post: next -> nest
-function getData() {
+// redirect to pagniation poage
+export default async function Page(){
+  // usePage context has history of last page only in blog section
+  const {page} = usePage()
+  const router = useRouter()
+  router.push(`/blog/${page}`)
 }
