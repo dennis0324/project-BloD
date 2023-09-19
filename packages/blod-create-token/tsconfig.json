@@ -16,5 +16,5 @@
     }
   },
 
-  "include": ["src","index.ts", "temp/index.ts"]
+  "include": ["src","src/index.ts", "temp/index.ts"]
 }
