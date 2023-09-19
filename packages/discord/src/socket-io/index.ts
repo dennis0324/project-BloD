@@ -21,14 +21,13 @@ export class BLoDDiscordSocket{
       console.log('socket already exist')
 
     this.registerSocketEvent()
-    // console.log(sockets)
   }
 
   private registerSocketEvent(){
     const sockets:Sockets = require('./socket')
     Object.keys(sockets).forEach(key => {
       const socket = sockets[key]
-      this.socket.on(socket.type,async (data) => socket.handler(this,data))
+      const t:Socket = this.socket.on(socket.type,async (data) => socket.handler(t,this,data))
     })
   }
 
