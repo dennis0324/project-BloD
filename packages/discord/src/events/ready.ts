@@ -1,12 +1,8 @@
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
-// import { Client } from "discord.js";
-import {BloDClient as Client} from "../interfaces/client";
-import { token } from "../../config";
-import { Socket } from "socket.io-client";
-import { applicationID } from 'config'
+import { token } from "../../envConfig";
+import { applicationID } from 'envConfig'
 import { BLoDDiscordSocket } from "@/socket-io";
-// import { CommandList } from "../../temp";
 
 export const onReady = async (socketManager:BLoDDiscordSocket) => {
   const rest = new REST().setToken(
