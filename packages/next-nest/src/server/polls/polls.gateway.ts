@@ -1,4 +1,5 @@
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Namespace, Socket } from 'socket.io';
 // import 
@@ -8,6 +9,10 @@ import { Namespace, Socket } from 'socket.io';
 })
 export class PollsGateway implements 
 OnGatewayInit,OnGatewayConnection,OnGatewayDisconnect {
+  constructor(private configService: ConfigService) {
+    // const t = configService.get('BLOD_MESSAGE_SECRET')
+    // console.log(t)
+  }
   // web socket with discord and nextjs
   @WebSocketServer() io : Namespace
   private readonly logger = new Logger(PollsGateway.name);

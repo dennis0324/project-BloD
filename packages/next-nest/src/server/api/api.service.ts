@@ -1,10 +1,18 @@
 import { Injectable } from '@nestjs/common'
 import { Socket, io } from 'socket.io-client';
+import { PollsService } from '../polls/polls.service';
 
 @Injectable()
 export class ApiService {
-  constructor(){
-    this.socket = io('http://localhost:3000/polls')
+
+  // @Inject(ApiService)
+  // private readonly apiService: ApiService;
+
+  constructor(
+    private readonly pollService: PollsService,
+  ){
+    const token = this.pollService.createToken()
+    this.socket = io('http://localhost:3000/polls',{query:{token:token}})
   }
   private socket:Socket
 

@@ -1,10 +1,15 @@
 import { INestApplicationContext, Logger } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
 import { IoAdapter } from "@nestjs/platform-socket.io";
-import { Server, ServerOptions } from "socket.io";
+import { Server, ServerOptions, Socket } from "socket.io";
 
 export class SocketIoAdapter extends IoAdapter{
   private readonly logger = new Logger(SocketIoAdapter.name);
-  constructor(private app:INestApplicationContext){
+  constructor(
+    private app:INestApplicationContext,
+    private configService: ConfigService
+    ){
     super(app);
   }
 
@@ -25,10 +30,26 @@ export class SocketIoAdapter extends IoAdapter{
       ...options,
       cors,
     };
+    const jwtService = this.app.get(JwtService,{ strict: false });
 
     const server: Server = super.createIOServer(port, optionsWithCORS);
-
-
+    server.of('polls').use(createTokenMiddleware(jwtService,this.logger,this.configService))
     return server;
   }
 }
+
+const createTokenMiddleware = 
+  (jwtService: JwtService, logger: Logger,configService:ConfigService) => 
+  (socket: Socket, next) => {
+    const token = socket.handshake.query.token;
+
+    logger.debug(`Validating auth token before connection: ${token}`);
+
+    try{
+      const payload = jwtService.verify(token as string,{secret:configService.get<string>('BlOD_JWT_SECRET')});
+      next();
+    }
+    catch{
+      next(new Error('Forbidden'))
+    }
+  }
