@@ -12,6 +12,9 @@ export class BLoDDiscordSocket{
   constructor(private client: BloDClient){
     const manager = new Manager("http://localhost:3000", {
       reconnectionDelayMax: 10000,
+      query:{
+        token:this.client.createToken()
+      }
     });
 
 

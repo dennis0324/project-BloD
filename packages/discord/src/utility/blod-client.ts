@@ -1,9 +1,10 @@
 import { Client, ClientOptions, Collection, Interaction } from "discord.js";
 import { Command } from "src/interfaces/command";
 // import { BloDClient } from "@/interfaces/client";
-import { glob, globSync, globStream, globStreamSync, Glob } from 'glob'
+import { globSync } from 'glob'
+import {BLOD_MESSAGE_SECRET} from 'envConfig'
+import jwt from "jsonwebtoken";
 
-import fs from 'fs';
 import path from 'path';
 
 export default class ClientManger{
@@ -47,6 +48,9 @@ export class BloDClient extends Client{
     })
   }
 
+  createToken(){
+    return jwt.sign({},BLOD_MESSAGE_SECRET)
+  }
 }
 
 export type BlobClient = typeof BloDClient;
