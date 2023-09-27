@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation'
 import { usePage } from '@src/contexts/blogpost-page';
 import NextPrevBtn from '@src/components/next-button';
 
-const randomNumber = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
+// const randomNumber = (min: number, max: number) =>
+//   Math.floor(Math.random() * (max - min + 1) + min);
 
 export function BlogPagination() {
   const location = usePathname();
@@ -21,7 +21,6 @@ export function BlogPagination() {
     fetch(`http://localhost:3000/api/blogposts?postCount=5&format=length`)
     .then(res => res.json())
     .then(res => {
-      console.log(res)
       setTotalPage(res.length)
     })
 

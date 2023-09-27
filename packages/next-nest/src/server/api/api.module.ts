@@ -1,11 +1,23 @@
 import { Module } from '@nestjs/common'
-import { ApiController } from './api.controller'
-import { ApiService } from './api.service'
-import { PollsModule } from '../polls/polls.module'
+import { SocketModule } from '../socket/socket.module'
+import { RouterModule } from '@nestjs/core'
+import { V1Module } from './v1/v1.module'
 
 @Module({
-  imports: [PollsModule],
-  providers: [ApiService],
-  controllers: [ApiController]
+  imports: [
+    SocketModule,
+    V1Module,
+    RouterModule.register([
+      {
+        path: 'api',
+        children:[
+          {
+            path: 'v1',
+            module: V1Module
+          }
+        ]
+      }
+    ])
+  ],
 })
 export class ApiModule {}

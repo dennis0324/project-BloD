@@ -6,14 +6,13 @@ import LogoPic from "./logo"
 
 export type Mode = 'main' | 'footer'
 
-type props = {
-    mode:Mode
-}
+// type props = {
+//     mode:Mode
+// }
 
 function logo({className,mode}:{className?:string,mode:Mode}){
     
     const location = usePathname()
-    console.log(location)
     return (location !== '/'|| mode === 'main') ? <LogoPic className={className}/> : ''        
 }
 

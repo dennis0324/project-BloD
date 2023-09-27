@@ -1,5 +1,5 @@
 // Require the necessary discord.js classes
-import { Events, GatewayIntentBits, Interaction, Partials, } from 'discord.js';
+import { Events, GatewayIntentBits, Interaction, Partials, TextChannel, WebhookClient, } from 'discord.js';
 import { token } from './envConfig';
 import { onReady } from "@/events/ready";
 import { onInteractionCreate } from '@/events/interaction-create';
@@ -9,9 +9,8 @@ import { onMessageUpdate } from '@/events/message-update';
 import { onMessageCreate } from '@/events/message-create';
 
 
-async function run(){
+export async function run(){
   
-  // console.log(adaptor.textContent(svg.styleSheet(html)));
   const client = new BloDClient(
     {
       intents: [
@@ -35,7 +34,6 @@ async function run(){
 
   client.on(Events.ClientReady, async () => await onReady(discordSocket));
 
-  // We use 'c' for the event parameter to keep it separate from the already defined 'client'
   client.on(Events.InteractionCreate, async (interaction: Interaction ) => { onInteractionCreate(discordSocket,interaction)})
 
   // Log in to Discord with your client's token
@@ -46,6 +44,4 @@ async function run(){
   client.on(Events.MessageCreate, async (message) => onMessageCreate(discordSocket,message))
   client.login(token);
 }
-
-run()
 

@@ -33,7 +33,7 @@ export class SocketIoAdapter extends IoAdapter{
     const jwtService = this.app.get(JwtService,{ strict: false });
 
     const server: Server = super.createIOServer(port, optionsWithCORS);
-    server.of('polls').use(createTokenMiddleware(jwtService,this.logger,this.configService))
+    server.use(createTokenMiddleware(jwtService,this.logger,this.configService))
     return server;
   }
 }
@@ -46,7 +46,7 @@ const createTokenMiddleware =
     logger.debug(`Validating auth token before connection: ${token}`);
 
     try{
-      const payload = jwtService.verify(token as string,{secret:configService.get<string>('BlOD_JWT_SECRET')});
+      // const payload = jwtService.verify(token as string,{secret:configService.get<string>('BlOD_JWT_SECRET')});
       next();
     }
     catch{

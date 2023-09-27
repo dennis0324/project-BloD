@@ -116,6 +116,7 @@ nav{
   padding:20px;
   font-size: 1.2rem;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .nav-link{

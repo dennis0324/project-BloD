@@ -4,9 +4,14 @@ import React, { createContext, useContext, useState } from "react"
 // this context is for loading blog pagniation data when clicking blog btn in the header page
 // 이 컨텍스트는 블로그 버튼 클릭시 봤던 페이지를 로딩하기 휘함이다.
 
-const initialState = {
+interface InitialState {
+  page: number
+  setPage:(page:number) => any
+}
+
+const initialState:InitialState = {
   page: 0,
-  setPage: (page:number) => {}
+  setPage: () => {}
 }
 
 const pageContext = createContext(initialState)

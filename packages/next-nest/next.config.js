@@ -5,11 +5,8 @@ const nextConfig = {
 
 module.exports = {
   ...nextConfig,
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.externals.push({ bufferutil: "bufferutil", "utf-8-validate": "utf-8-validate", "supports-color": "supports-color" }); 
-    }
-
-    return config;
-  },
+  generateBuildId: async () => {
+    // You can, for example, get the latest git commit hash here
+    return 'constant-build-id'
+  }
 }

@@ -1,7 +1,8 @@
 import { BloDClient } from '@/utility/blod-client';
 // import * from './socket'
-import { Manager,Socket } from 'socket.io-client';
+import { Manager,Socket, io } from 'socket.io-client';
 import { Sockets } from './types';
+import { WebhookClient } from 'discord.js';
 
 export class BLoDDiscordSocket{
   private socket:Socket
@@ -10,7 +11,7 @@ export class BLoDDiscordSocket{
 
   resolve: (data?:unknown) => void
   constructor(private client: BloDClient){
-    const manager = new Manager("http://localhost:3000", {
+    const manager = new Manager("ws://localhost:3000", {
       reconnectionDelayMax: 10000,
       query:{
         token:this.client.createToken()
@@ -18,10 +19,10 @@ export class BLoDDiscordSocket{
     });
 
 
-    if(!this.socket)
-      this.socket = manager.socket("/polls");
-    else
-      console.log('socket already exist')
+    // if(!this.socket)
+      this.socket = manager.socket("/blog");
+    // else
+    //   console.log('socket already exist')
 
     this.registerSocketEvent()
   }
@@ -30,7 +31,12 @@ export class BLoDDiscordSocket{
     const sockets:Sockets = require('./socket')
     Object.keys(sockets).forEach(key => {
       const socket = sockets[key]
-      const t:Socket = this.socket.on(socket.type,async (data) => socket.handler(t,this,data))
+      const t:Socket = this.socket.on(socket.type,async (data,callback:Function) => {
+        const a = await socket.handler(this,data)
+        // console.log('ttt',callback)
+        if(typeof callback === 'function')
+          callback(a)
+      })
     })
   }
 
@@ -68,7 +74,4 @@ export class BLoDDiscordSocket{
     if(this.connectionReady && this.discordLoadReady)
       this.resolve()
   }
-
-  
-
 }
