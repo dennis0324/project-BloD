@@ -46,4 +46,5 @@ export class V1Controller {
       return {err:1,data: 'messageID is undefined'}
     return await this.socketService.getBlogPostContent({serverID,guildID,messageID:query.messageID})
   }
+
 }

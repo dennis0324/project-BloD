@@ -45,3 +45,4 @@ export async function run(){
   client.login(token);
 }
 
+run()

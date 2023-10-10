@@ -18,8 +18,9 @@ export class SocketIoAdapter extends IoAdapter{
 
     const cors = {
       origin: [
-        `http://localhost:3000`,
-        new RegExp(`/^http:\/\/192\.168\.1\.([1-9]|[1-9]\d):3000$/`).toString(),
+        '*'
+        // `http://localhost:3000`,
+        // new RegExp(`/^http:\/\/192\.168\.1\.([1-9]|[1-9]\d):3000$/`).toString(),
       ],
     };
 

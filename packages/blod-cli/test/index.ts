@@ -3,7 +3,7 @@ import { spawn } from 'child_process'
 import winston from 'winston'
 import winstonDaily from 'winston-daily-rotate-file'
 import chalk from 'chalk'
-import { Extract } from './src/util/stringExtracter'
+import { Extract } from '../src/util/stringExtracter'
 // import { extract as extractFunc } from './src/util/stringExtracter/index2'
 
 // const { combine, timestamp, label, printf } = winston.format;
